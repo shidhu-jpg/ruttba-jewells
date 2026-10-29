@@ -1,0 +1,13 @@
+{
+  "name": "Ruttba Jewels",
+  "short_name": "Ruttba",
+  "description": "Browse Ruttba Jewels and order on WhatsApp",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf6ee",
+  "theme_color": "#4a0e1f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

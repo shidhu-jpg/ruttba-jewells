@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ruttba Jewels — Order on WhatsApp</title>
+  <meta name="description" content="Ruttba Jewels — hallmarked gold, diamond, kundan and silver jewellery. Browse the collection and order directly on WhatsApp.">
+  <meta name="theme-color" content="#4a0e1f">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- shared gradients for the jewellery illustrations -->
+  <svg class="defs" aria-hidden="true">
+    <defs>
+      <linearGradient id="rj-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e3a1"/><stop offset=".45" stop-color="#d4a437"/><stop offset="1" stop-color="#8f6512"/></linearGradient>
+      <linearGradient id="rj-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c3c7cc"/><stop offset="1" stop-color="#7d8288"/></linearGradient>
+      <linearGradient id="rj-ruby" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6b81"/><stop offset="1" stop-color="#8b0a24"/></linearGradient>
+      <linearGradient id="rj-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ee7b7"/><stop offset="1" stop-color="#065f46"/></linearGradient>
+      <linearGradient id="rj-diamond" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#dbeafe"/><stop offset="1" stop-color="#93a8c9"/></linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Offer marquee -->
+  <div class="offer"><div class="marquee" id="marquee"></div></div>
+
+  <header class="top">
+    <a href="#" class="brand" data-action="home">
+      <img src="icon.svg" alt="" width="40" height="40">
+      <span><b data-store="name">Ruttba Jewels</b><small>Fine Jewellery · Order on WhatsApp</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" data-action="search" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" data-action="catalog" aria-label="Catalogue">
+        <svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 13h8M8 17h5"/></svg>
+      </button>
+      <button class="icon-btn" data-action="cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-count" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">✦ Since generations · BIS Hallmarked</p>
+        <h1>Jewellery that carries your <em>ruttba</em>.</h1>
+        <p class="lead" data-store="tagline">Timeless jewellery, crafted for every celebration</p>
+        <div class="hero-cta">
+          <button class="btn btn-gold" data-action="all">Shop Collection</button>
+          <a class="btn btn-wa" data-wa href="#">
+            <svg viewBox="0 0 24 24" class="wa-ico"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7a11.6 11.6 0 0 1-4.5-4c-.4-.5-1-1.6-1-2.7s.6-1.7.9-2c.2-.2.5-.3.6-.3h.5c.1 0 .4 0 .6.4l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.1Z"/></svg>
+            Chat to Order
+          </a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="halo"></div>
+        <img class="hero-photo" src="images/hero.jpg" alt="Bride wearing gold bridal jewellery" width="1000" height="1200" fetchpriority="high">
+        <span class="hero-tag">Bridal Collection<b>Dulhan sets from ₹2.6L</b></span>
+      </div>
+    </section>
+
+    <!-- Coupons + trust -->
+    <section class="perks">
+      <div class="coupons">
+        <p><b>Tap to apply a coupon</b></p>
+        <div id="coupon-chips" class="chips"></div>
+      </div>
+      <ul class="trust">
+        <li><span>✓</span>BIS Hallmarked Gold</li>
+        <li><span>◆</span>Certified Diamonds</li>
+        <li><span>⛟</span>Insured Delivery</li>
+        <li><span>↺</span>Lifetime Exchange</li>
+      </ul>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories" class="section">
+      <div class="sec-head"><h2>Shop by Category</h2><button class="link" data-action="all">View all →</button></div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </section>
+
+    <!-- Best sellers -->
+    <section class="section">
+      <div class="sec-head"><h2>Best Sellers</h2><button class="link" data-action="best">View all →</button></div>
+      <div class="row-scroll" id="best-row"></div>
+    </section>
+
+    <!-- All products -->
+    <section id="products" class="section">
+      <div class="sec-head"><h2>Our Collection</h2><small id="result-count"></small></div>
+      <div class="toolbar">
+        <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="Search necklaces, jhumka, 22K…" autocomplete="off"></label>
+        <select id="sort" aria-label="Sort">
+          <option value="featured">Featured</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="off">Biggest Discount</option>
+        </select>
+      </div>
+      <div class="chips scroll" id="filter-chips"></div>
+      <button class="fchip best" id="best-toggle">★ Best Sellers only</button>
+      <div class="grid" id="product-grid"></div>
+    </section>
+
+    <!-- Custom order band -->
+    <section class="band">
+      <div>
+        <h2>Want something made just for you?</h2>
+        <p>Share a photo or idea — our karigars craft custom bridal sets, name pendants and rings to your budget.</p>
+      </div>
+      <a class="btn btn-wa" data-wa="Hi, I'd like to discuss a custom jewellery design." href="#">Start a custom order</a>
+    </section>
+
+    <!-- About -->
+    <section class="section about" id="about">
+      <div>
+        <h2>About <span data-store="name">Ruttba Jewels</span></h2>
+        <p>At Ruttba Jewels every piece is chosen for its finish, purity and the story it will carry. From everyday gold chains to complete dulhan sets, we offer hallmarked gold, certified diamonds, kundan and 925 silver — with honest pricing based on the day's metal rate.</p>
+        <p>Browse here, add to cart and send your order on WhatsApp. We confirm the final price, size and delivery personally.</p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" data-wa href="#">Need help? Chat on WhatsApp</a>
+          <button class="btn btn-ghost" data-action="install" hidden>Install our app</button>
+        </div>
+      </div>
+      <div class="visit">
+        <h3>Visit the store</h3>
+        <p data-store="address"></p>
+        <p class="muted" data-store="hours"></p>
+        <a class="btn btn-gold" data-map href="#">Get directions</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-grid">
+      <div>
+        <h4 data-store="name">Ruttba Jewels</h4>
+        <p data-store="tagline"></p>
+        <div class="social">
+          <a data-wa href="#" aria-label="WhatsApp">WhatsApp</a>
+          <a data-social="instagram" href="#">Instagram</a>
+          <a data-social="facebook" href="#">Facebook</a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="#" data-action="home">Home</a>
+        <a href="#" data-action="all">All Products</a>
+        <a href="#" data-action="best">Best Sellers</a>
+        <a href="#" data-action="orders">My Orders</a>
+        <a href="#" data-action="catalog">PDF Catalogue</a>
+        <a href="#about">About Store</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a data-map href="#" data-store="address"></a>
+        <a data-tel href="#" data-store="phone"></a>
+        <a data-mail href="#" data-store="email"></a>
+      </div>
+      <div>
+        <h4>Customer Care</h4>
+        <a href="#" data-policy="privacy">Privacy Policy</a>
+        <a href="#" data-policy="terms">Terms &amp; Conditions</a>
+        <a href="#" data-policy="shipping">Shipping &amp; Delivery</a>
+        <a href="#" data-policy="refund">Refund &amp; Cancellation</a>
+      </div>
+    </div>
+    <p class="copy">© <span id="year"></span> <span data-store="name">Ruttba Jewels</span>. All rights reserved.</p>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a class="fab-wa" data-wa href="#" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7a11.6 11.6 0 0 1-4.5-4c-.4-.5-1-1.6-1-2.7s.6-1.7.9-2c.2-.2.5-.3.6-.3h.5c.1 0 .4 0 .6.4l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.1Z"/></svg>
+  </a>
+
+  <!-- Bottom nav (mobile) -->
+  <nav class="bnav">
+    <button data-action="home"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</button>
+    <button data-action="cats"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Categories</button>
+    <button data-action="cart" class="bnav-cart"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Cart<span class="cart-count" hidden>0</span></button>
+    <button data-action="orders"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Orders</button>
+    <button data-action="catalog"><svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>Catalogue</button>
+  </nav>
+
+  <!-- Sheets -->
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="sheet" id="product-sheet" aria-label="Product details">
+    <button class="sheet-x" data-close aria-label="Close">×</button>
+    <div id="pd" class="pd"></div>
+  </aside>
+
+  <aside class="sheet" id="cart-sheet" aria-label="Cart">
+    <div class="sheet-head"><h2>My Cart</h2><button class="sheet-x" data-close aria-label="Close">×</button></div>
+    <div id="cart-body" class="sheet-body"></div>
+    <div id="cart-foot" class="sheet-foot" hidden>
+      <div class="coupon-row">
+        <input id="coupon-input" placeholder="Coupon code" autocomplete="off">
+        <button class="btn btn-ghost sm" id="coupon-apply">Apply</button>
+      </div>
+      <p id="coupon-msg" class="coupon-msg"></p>
+      <div id="cart-totals"></div>
+      <button class="btn btn-wa block" data-action="checkout">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <aside class="sheet" id="checkout-sheet" aria-label="Checkout">
+    <div class="sheet-head"><h2>Checkout</h2><button class="sheet-x" data-close aria-label="Close">×</button></div>
+    <form id="checkout-form" class="sheet-body">
+      <div class="seg">
+        <label><input type="radio" name="mode" value="delivery" checked><span>Home Delivery</span></label>
+        <label><input type="radio" name="mode" value="pickup"><span>Store Pickup</span></label>
+      </div>
+      <label class="field"><span>Full name</span><input name="name" required autocomplete="name"></label>
+      <label class="field"><span>WhatsApp number</span><input name="phone" required inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></label>
+      <label class="field addr-field"><span>Address</span><textarea name="address" rows="2" autocomplete="street-address"></textarea></label>
+      <div class="two addr-field">
+        <label class="field"><span>City</span><input name="city" autocomplete="address-level2"></label>
+        <label class="field"><span>Pincode</span><input name="pincode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="postal-code"></label>
+      </div>
+      <label class="field"><span>Payment preference</span>
+        <select name="pay">
+          <option>UPI / Bank transfer</option>
+          <option>Cash on Delivery</option>
+          <option>Pay at store</option>
+        </select>
+      </label>
+      <label class="field"><span>Note (size, engraving, gift wrap…)</span><textarea name="note" rows="2"></textarea></label>
+      <h3 class="mini">Order summary</h3>
+      <div id="co-items"></div>
+      <div id="co-totals"></div>
+      <button class="btn btn-wa block" type="submit">Send Order on WhatsApp</button>
+      <p class="muted small">Final price is confirmed on WhatsApp as per today's metal rate. No payment is taken on this website.</p>
+    </form>
+  </aside>
+
+  <aside class="sheet" id="orders-sheet" aria-label="My orders">
+    <div class="sheet-head"><h2>My Orders</h2><button class="sheet-x" data-close aria-label="Close">×</button></div>
+    <div id="orders-body" class="sheet-body"></div>
+  </aside>
+
+  <aside class="sheet wide" id="catalog-sheet" aria-label="Catalogue">
+    <div class="sheet-head"><h2>Catalogue</h2>
+      <div><button class="btn btn-gold sm" data-action="print">Save as PDF</button><button class="sheet-x" data-close aria-label="Close">×</button></div>
+    </div>
+    <div class="sheet-body catalog">
+      <div class="print-only cat-title"><h1 data-store="name">Ruttba Jewels</h1><p data-store="phone"></p></div>
+      <div id="catalog-body"></div>
+    </div>
+  </aside>
+
+  <aside class="sheet" id="policy-sheet" aria-label="Policy">
+    <div class="sheet-head"><h2 id="policy-title"></h2><button class="sheet-x" data-close aria-label="Close">×</button></div>
+    <div id="policy-body" class="sheet-body"></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
