@@ -6,8 +6,8 @@
 const STORE = {
   name: 'Ruttba Jewels',
   tagline: 'Timeless jewellery, crafted for every celebration',
-  whatsapp: '919999999999',          // country code + number, no "+" or spaces  ← REPLACE
-  phone: '+91 99999 99999',          // shown on site                           ← REPLACE
+  whatsapp: '919729748097',          // country code + number, no "+" or spaces
+  phone: '+91 97297 48097',          // shown on site
   email: 'hello@ruttbajewels.in',    //                                          ← REPLACE
   address: 'Main Sarafa Bazar, Shahabad Markanda, Haryana',
   mapQuery: 'Ruttba Jewels',         // Google Maps search text
