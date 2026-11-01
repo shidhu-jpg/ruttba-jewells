@@ -9,7 +9,7 @@ const STORE = {
   whatsapp: '919999999999',          // country code + number, no "+" or spaces  ← REPLACE
   phone: '+91 99999 99999',          // shown on site                           ← REPLACE
   email: 'hello@ruttbajewels.in',    //                                          ← REPLACE
-  address: 'Main Market, Your City, State – 000000', //                         ← REPLACE
+  address: 'Main Sarafa Bazar, Shahabad Markanda, Haryana',
   mapQuery: 'Ruttba Jewels',         // Google Maps search text
   hours: 'Mon – Sun · 10:30 AM – 8:30 PM',
   instagram: '',                     // full URL, leave '' to hide

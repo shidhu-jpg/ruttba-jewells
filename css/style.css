@@ -153,6 +153,10 @@ h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.15; margin: 0; color:
 .about p { margin: 0 0 12px; }
 .visit { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
 .visit h3 { font-size: 22px; margin-bottom: 6px; }
+.store-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; grid-column: 1 / -1; }
+.store-photos figure { margin: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--paper); }
+.store-photos img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.store-photos figcaption { padding: 8px 12px; font-size: 13px; color: var(--muted); }
 
 /* ---------- Footer ---------- */
 .foot { background: var(--maroon); color: #f3e5d0; margin-top: 36px; padding: 32px 16px 16px; }
