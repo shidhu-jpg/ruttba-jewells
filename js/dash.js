@@ -109,9 +109,10 @@ function productForm() {
   return `<form class="dash-card" id="prod-form">
     <h2>${p ? 'Edit ' + esc(p.name) : 'Add a new piece'}</h2>
     <label class="photo-pick">
-      <input type="file" name="photo" accept="image/*" hidden>
-      <span class="photo-box">${p?.img ? `<img id="photo-preview" src="${esc(p.img)}" alt="">` : '<img id="photo-preview" alt="" hidden>'}<em>${p?.img ? 'Tap to change photo' : '📷 Tap to add a photo'}</em></span>
+      <input type="file" name="photo" accept="image/jpeg,.jpg,.jpeg,image/png,image/webp" hidden>
+      <span class="photo-box">${p?.img ? `<img id="photo-preview" src="${esc(p.img)}" alt="">` : '<img id="photo-preview" alt="" hidden>'}<em>${p?.img ? 'Tap to change photo' : '📷 Tap to add a JPG photo'}</em></span>
     </label>
+    <p class="photo-hint muted" id="photo-hint">JPG photo (.jpg / .jpeg) from the gallery or camera — it is resized automatically.</p>
     <label class="field"><span>Name *</span><input name="name" required maxlength="120" value="${esc(p?.name)}" placeholder="e.g. Polki Choker Set"></label>
     <div class="two">
       <label class="field"><span>Category *</span><select name="cat" required>${CATEGORIES.map(c => `<option value="${c.id}"${c.id === p?.cat ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>
@@ -364,7 +365,8 @@ document.addEventListener('submit', async e => {
     const p = prodEditing === 'new' ? null : prodById(prodEditing);
     btn.disabled = true; msg.textContent = '';
     try {
-      if (!file && !p?.img) throw new Error('Add a photo of the piece');
+      if (!file && !p?.img) throw new Error('Add a JPG photo of the piece');
+      if (file) { const bad = RJ.checkPhoto(file); if (bad) throw new Error(bad); }
       let img = p?.img || '';
       if (file) { msg.textContent = 'Uploading photo…'; img = await RJ.uploadPhoto(token(), file); }
       msg.textContent = 'Saving…';
@@ -433,9 +435,13 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => {
   if (e.target.id === 'staff-filter') { staffFilter = e.target.value; render(); }
   if (e.target.name === 'photo' && e.target.files[0]) {
+    const file = e.target.files[0], hint = $('#photo-hint'), bad = RJ.checkPhoto(file);
+    if (bad) { e.target.value = ''; hint.textContent = bad; hint.classList.add('err'); return; }
     const img = $('#photo-preview');
-    img.src = URL.createObjectURL(e.target.files[0]); img.hidden = false;
+    img.src = URL.createObjectURL(file); img.hidden = false;
     $('.photo-box em').textContent = 'Tap to change photo';
+    hint.classList.remove('err');
+    hint.textContent = `✓ ${file.name} · ${(file.size / 1048576).toFixed(1)} MB — tap "${prodEditing === 'new' ? 'Add to store' : 'Save changes'}" to upload`;
   }
 });
 document.addEventListener('input', e => { if (e.target.id === 'prod-q') { prodQuery = e.target.value; renderProdList(); } });

@@ -381,7 +381,7 @@ end $$;
 
 -- Photo storage: public to view, upload only with a valid ticket, no overwriting or deleting from the website
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('rj-products', 'rj-products', true, 3145728, array['image/jpeg', 'image/png', 'image/webp'])
+values ('rj-products', 'rj-products', true, 3145728, array['image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/webp'])
 on conflict (id) do update set public = true, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
 drop policy if exists "rj upload with ticket" on storage.objects;
 create policy "rj upload with ticket" on storage.objects for insert to anon, authenticated

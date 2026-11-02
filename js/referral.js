@@ -82,15 +82,54 @@ const RJ = (() => {
     },
   };
 
-  /* Phone photo → JPEG at most 1400px, so uploads are quick and the store stays fast */
+  /* Photo → JPEG at most 1400px, so uploads are quick and the store stays fast.
+     JPG is the main format; PNG/WebP are converted to JPG too. */
+  const PHOTO_TYPES = /^image\/(jpe?g|pjpeg|png|webp)$/i;
+  const PHOTO_EXT = /\.(jpe?g|jfif|png|webp)$/i;
+  const MAX_RAW = 3 * 1024 * 1024;                 // storage limit for a photo sent without resizing
+  const isJpg = f => /^image\/(jpe?g|pjpeg)$/i.test(f.type) || /\.(jpe?g|jfif)$/i.test(f.name);
+  function checkPhoto(file) {
+    if (!file) return 'Choose a photo';
+    if (!PHOTO_TYPES.test(file.type) && !PHOTO_EXT.test(file.name)) return 'Please choose a JPG photo (.jpg / .jpeg)';
+    if (file.size > 25 * 1024 * 1024) return 'This photo is too big (over 25 MB) — choose a smaller JPG';
+    return '';
+  }
+  function decode(file) {                          // fallback for browsers without createImageBitmap
+    return new Promise((ok, no) => {
+      const url = URL.createObjectURL(file), im = new Image();
+      im.onload = () => { ok(im); setTimeout(() => URL.revokeObjectURL(url), 1000); };
+      im.onerror = () => { URL.revokeObjectURL(url); no(new Error('decode')); };
+      im.src = url;
+    });
+  }
   async function shrink(file, max = 1400) {
-    let bmp;
-    try { bmp = await createImageBitmap(file); } catch { throw new Error('This photo type is not supported — use a JPG or PNG'); }
-    const s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const bad = checkPhoto(file); if (bad) throw new Error(bad);
+    let pic;
+    try { pic = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch { try { pic = await decode(file); } catch { pic = null; } }
+    if (!pic) {
+      if (isJpg(file) && file.size <= MAX_RAW) return file;      // can't resize here, but the JPG itself is fine to upload
+      throw new Error('Could not open this photo — please choose a JPG photo');
+    }
+    const w = pic.width || pic.naturalWidth, h = pic.height || pic.naturalHeight;
+    const s = Math.min(1, max / Math.max(w, h));
     const c = document.createElement('canvas');
-    c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    return new Promise((ok, no) => c.toBlob(b => b ? ok(b) : no(new Error('Could not read the photo')), 'image/jpeg', .85));
+    c.width = Math.round(w * s); c.height = Math.round(h * s);
+    const g = c.getContext('2d');
+    g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);   // transparent PNGs get a white background, not black
+    g.drawImage(pic, 0, 0, c.width, c.height);
+    const blob = await new Promise(ok => c.toBlob(ok, 'image/jpeg', .85));
+    if (blob) return blob;
+    if (isJpg(file) && file.size <= MAX_RAW) return file;
+    throw new Error('Could not read the photo — please try another JPG');
+  }
+  function uploadError(status, body) {
+    const m = (body?.message || body?.error || '').toLowerCase();
+    if (m.includes('bucket') && m.includes('not found')) return 'Photo storage is not set up — run supabase/setup.sql in Supabase once';
+    if (m.includes('row-level security') || m.includes('policy') || status === 403) return 'Upload not allowed — log out, log in again and retry (if it repeats, re-run supabase/setup.sql)';
+    if (m.includes('size') || status === 413) return 'Photo is too big — choose a smaller JPG';
+    if (m.includes('mime') || m.includes('type')) return 'Please choose a JPG photo';
+    return body?.message || `Photo upload failed (${status}) — check the internet and try again`;
   }
 
   return {
@@ -112,11 +151,15 @@ const RJ = (() => {
     },
 
     products: () => rpc('rj_products_list'),
+    checkPhoto,
     async uploadPhoto(token, file) {
       const [{ ticket }, blob] = await Promise.all([rpc('rj_upload_ticket', { p_token: token }), shrink(file)]);
       const path = `${ticket}/${Date.now().toString(36)}.jpg`;
-      const res = await fetch(`${base()}/storage/v1/object/rj-products/${path}`, { method: 'POST', headers: headers({ 'Content-Type': 'image/jpeg', 'x-upsert': 'false' }), body: blob });
-      if (!res.ok) throw new Error((await res.json().catch(() => null))?.message || 'Photo upload failed');
+      let res;
+      try {
+        res = await fetch(`${base()}/storage/v1/object/rj-products/${path}`, { method: 'POST', headers: headers({ 'Content-Type': 'image/jpeg', 'Cache-Control': 'max-age=31536000', 'x-upsert': 'false' }), body: blob });
+      } catch { throw new Error('No internet — photo not uploaded. Try again'); }
+      if (!res.ok) throw new Error(uploadError(res.status, await res.json().catch(() => null)));
       return `${base()}/storage/v1/object/public/rj-products/${path}`;
     },
 

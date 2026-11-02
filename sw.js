@@ -1,5 +1,5 @@
 // Network-first for everything, falling back to cache when offline.
-const CACHE = 'ruttba-v4';
+const CACHE = 'ruttba-v5';
 const ASSETS = ['./', 'index.html', 'staff.html', 'admin.html', 'css/style.css', 'css/dash.css', 'js/data.js', 'js/referral.js', 'js/app.js', 'js/dash.js', 'icon.svg', 'manifest.json'];
 
 self.addEventListener('install', e => {
