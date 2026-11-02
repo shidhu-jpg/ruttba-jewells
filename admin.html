@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Owner — Ruttba Jewels</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#4a0e1f">
+  <link rel="manifest" href="manifest-owner.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dash.css">
+</head>
+<body class="dash" data-page="owner">
+  <header class="top">
+    <a href="./" class="brand">
+      <img src="icon.svg" alt="" width="40" height="40">
+      <span><b data-store="name">Ruttba Jewels</b><small>Owner dashboard</small></span>
+    </a>
+    <div class="top-actions"><button class="btn btn-ghost sm" data-logout hidden>Log out</button></div>
+  </header>
+
+  <main class="dash-main">
+    <p class="dash-note" id="setup-note" hidden>Staff sharing isn't switched on yet. Add the Supabase keys in <code>js/data.js</code>.</p>
+
+    <section class="dash-card login" id="login" hidden>
+      <h1>Owner Login</h1>
+      <p class="muted">See which staff member's status brought each customer, and manage your staff.</p>
+      <form id="login-form">
+        <label class="field"><span>Username</span><input name="user" required autocomplete="username" autocapitalize="none" spellcheck="false"></label>
+        <label class="field"><span>Password</span><input name="pass" type="password" required autocomplete="current-password"></label>
+        <button class="btn btn-gold block">Log in</button>
+        <p class="form-msg" id="login-msg"></p>
+      </form>
+    </section>
+
+    <section id="app" hidden></section>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="js/data.js"></script>
+  <script src="js/referral.js"></script>
+  <script src="js/dash.js"></script>
+</body>
+</html>

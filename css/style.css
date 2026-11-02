@@ -132,6 +132,18 @@ h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.15; margin: 0; color:
 .price em { color: var(--wa); font-style: normal; font-weight: 600; font-size: 13px; }
 .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
 .card-actions .btn { padding: 9px 6px; font-size: 12.5px; }
+.card-actions .btn-share { grid-column: 1 / -1; }
+.btn-share { background: var(--maroon); color: var(--gold-2); }
+.btn-share:hover { background: var(--maroon-2); }
+.btn-share svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.staff-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; padding: 12px; border-radius: 14px; background: #f3e4c4; }
+.staff-tools .btn-share { flex: 1 1 100%; }
+.staff-tools .btn-ghost { flex: 1; background: var(--paper); }
+
+/* ---------- Staff sharing bar ---------- */
+.staff-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 8px 16px; background: #f3e4c4; color: var(--maroon); font-size: 13px; border-bottom: 1px solid var(--line); }
+.staff-bar span { flex: 1 1 220px; }
+.staff-bar a, .staff-bar button { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; font-size: 13px; color: var(--maroon); }
 
 .toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
 .search { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 0 14px; }

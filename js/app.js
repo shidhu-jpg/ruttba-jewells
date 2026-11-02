@@ -111,10 +111,13 @@ function card(p) {
       <div class="card-actions">
         <button class="btn btn-ghost" data-add="${p.id}">Add to Cart</button>
         <button class="btn btn-wa" data-buy="${p.id}">Order Now</button>
+        ${shareBtn(p.id)}
       </div>
     </div>
   </article>`;
 }
+const shareBtn = id => RJ.staff() ? `<button class="btn btn-share" data-share="${id}">
+  <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>Share to Status</button>` : '';
 
 function renderProducts() {
   const q = filter.q.trim().toLowerCase();
@@ -164,6 +167,11 @@ function openProduct(id) {
         <button class="btn btn-ghost" data-add="${p.id}" data-from-pd>Add to Cart</button>
         <button class="btn btn-wa" data-buy="${p.id}" data-from-pd>Order on WhatsApp</button>
       </div>
+      ${RJ.staff() ? `<div class="staff-tools">
+        ${shareBtn(p.id)}
+        <button class="btn btn-ghost sm" data-copylink="${p.id}">Copy link</button>
+        ${p.img ? `<button class="btn btn-ghost sm" data-download="${p.id}">Download photo</button>` : ''}
+      </div>` : ''}
       <a class="link" data-wa href="#">Ask a question about this piece →</a>
     </div>`;
   const ask = $('#pd [data-wa]'); ask.href = waLink(`Hi ${STORE.name}, I have a question about "${p.name}" (${inr(p.price)}).`); ask.target = '_blank';
@@ -273,6 +281,7 @@ function placeOrder(e) {
   const c = { name: f.name.value.trim(), phone, address: f.address.value.trim(), city: f.city.value.trim(), pincode: f.pincode.value.trim() };
   store.set('rj-customer', c);
   const pickup = f.mode.value === 'pickup';
+  const ref = RJ.referral();
 
   const lines = list.map((l, i) => { const p = byId(l.id); return `${i + 1}. ${p.name}${l.size ? ` (Size ${l.size})` : ''} — ${p.purity}\n    ${l.qty} × ${inr(p.price)} = ${inr(p.price * l.qty)}`; });
   const msg = [
@@ -292,7 +301,9 @@ function placeOrder(e) {
     pickup ? 'Will collect from store' : `${c.address}, ${c.city} – ${c.pincode}`,
     `Payment: ${f.pay.value}`,
     f.note.value.trim() ? `Note: ${f.note.value.trim()}` : null,
+    ref ? `Ref: ${ref}` : null,
   ].filter(x => x !== null).join('\n');
+  RJ.orderPlaced(ref, list[0].id, list.map(l => byId(l.id).name).join(', '), `${id} · ${inr(pickup ? t.total - t.delivery : t.total)}`);
 
   const orders = store.get('rj-orders', []);
   orders.unshift({ id, at: now.toISOString(), items: list.map(l => ({ name: byId(l.id).name, size: l.size, qty: l.qty, price: byId(l.id).price })), total: pickup ? t.total - t.delivery : t.total, msg });
@@ -342,6 +353,14 @@ function openPolicy(k) {
   openSheet('policy-sheet');
 }
 
+/* ---------- Staff bar ---------- */
+function renderStaffBar() {
+  const s = RJ.staff(), bar = $('#staff-bar');
+  bar.hidden = !s;
+  if (s) bar.innerHTML = `<span>Sharing as <b>${esc(s.name)}</b> — tap “Share to Status” on any piece</span>
+    <a href="staff.html">My clicks</a><button data-action="staff-logout">Log out</button>`;
+}
+
 /* ---------- Sheets & toast ---------- */
 function openSheet(id) {
   $$('.sheet.open').forEach(s => s.id !== id && s.classList.remove('open'));
@@ -366,6 +385,9 @@ document.addEventListener('click', e => {
   const d = t.dataset;
   if (d.add) { e.stopPropagation(); addToCart(d.add, 'fromPd' in d ? pdSize() : ''); if ('fromPd' in d) closeSheets(); return; }
   if (d.buy) { e.stopPropagation(); const p = byId(d.buy); openCheckout([{ key: d.buy, id: d.buy, size: 'fromPd' in d ? pdSize() : (p.sizes?.[0] || ''), qty: 1 }]); return; }
+  if (d.share) { e.stopPropagation(); return RJ.act('share', byId(d.share), toast); }
+  if (d.copylink) return RJ.act('copy', byId(d.copylink), toast);
+  if (d.download) return RJ.act('download', byId(d.download), toast);
   if (d.open) return openProduct(d.open);
   if (d.cat) return showProducts({ cat: d.cat, best: false, q: '' });
   if (d.fcat) return (filter.cat = d.fcat, renderProducts());
@@ -392,6 +414,7 @@ document.addEventListener('click', e => {
       cats: () => $('#categories').scrollIntoView({ behavior: 'smooth' }),
       search: () => { $('#products').scrollIntoView({ behavior: 'smooth' }); setTimeout(() => $('#search').focus(), 350); },
       install: () => installApp(),
+      'staff-logout': () => { RJ.logout(); renderStaffBar(); renderBest(); renderProducts(); toast('Logged out of staff sharing'); },
     })[d.action]?.();
   }
 });
@@ -417,9 +440,32 @@ function installApp() {
 }
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 
+/* ---------- Live products (added from the owner/staff dashboards) ---------- */
+function renderCatalogue() {
+  cart = cart.filter(l => byId(l.id));           // drop pieces that were removed from the store
+  saveCart();
+  renderCategories();
+  renderBest();
+  renderProducts();
+}
+const cachedProducts = RJ.ready && store.get('rj-products', null);
+if (cachedProducts?.length) PRODUCTS = cachedProducts;
+const productsLoaded = RJ.ready
+  ? RJ.products().then(list => { if (list.length) { PRODUCTS = list; store.set('rj-products', list); renderCatalogue(); } }).catch(() => {})
+  : Promise.resolve();
+
 /* ---------- Boot ---------- */
 fillStore();
-renderCategories();
-renderBest();
-renderProducts();
-renderCartBadge();
+renderCatalogue();
+renderStaffBar();
+
+/* Opened from a shared link: ?p=<product>&ref=<staff code> */
+const params = new URLSearchParams(location.search);
+if (params.has('p') || params.has('ref')) {
+  history.replaceState(null, '', location.pathname + location.hash);
+  productsLoaded.then(() => {                    // a newly added piece may only exist in the live list
+    const linked = byId(params.get('p'));
+    RJ.landing(params.get('ref'), linked?.id, linked?.name);
+    if (linked) openProduct(linked.id);
+  });
+}

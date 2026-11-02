@@ -1,0 +1,14 @@
+{
+  "id": "ruttba-owner",
+  "name": "Ruttba Jewels Owner",
+  "short_name": "Ruttba Owner",
+  "description": "Staff status clicks and orders for Ruttba Jewels",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf6ee",
+  "theme_color": "#4a0e1f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

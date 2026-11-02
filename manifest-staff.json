@@ -1,0 +1,14 @@
+{
+  "id": "ruttba-staff",
+  "name": "Ruttba Jewels Staff",
+  "short_name": "Ruttba Staff",
+  "description": "Share pieces on WhatsApp status and see customer clicks",
+  "start_url": "./staff.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf6ee",
+  "theme_color": "#4a0e1f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

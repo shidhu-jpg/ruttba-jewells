@@ -24,6 +24,14 @@ const STORE = {
   },
 };
 
+/* Staff sharing + owner/staff dashboards (staff.html, admin.html).
+   Paste from Supabase → Project Settings → API Keys. Leave '' to switch the feature off.
+   Run supabase/setup.sql once in the Supabase SQL Editor first. */
+const BACKEND = {
+  url: 'https://obuwgnxtuvukjfiwdpmh.supabase.co',                           // e.g. https://abcdxyz.supabase.co           ← REPLACE
+  key: 'sb_publishable_47FQR2K9Y5BzuHcIzG6zmw_I6-eTWoa',                           // publishable / anon key (safe on a website)  ← REPLACE
+};
+
 const CATEGORIES = [
   { id: 'necklaces', name: 'Necklaces',   art: 'necklace', img: 'images/n2.jpg' },
   { id: 'earrings',  name: 'Earrings',    art: 'earrings', img: 'images/e1.jpg' },
@@ -37,8 +45,9 @@ const CATEGORIES = [
 
 /* img: product photo (images/ folder). Remove it to show a drawn illustration instead.
    Current photos are free-licence Unsplash stock (see images/CREDITS.md) — swap in the shop's own photos before launch.
-   sizes: optional list shown as a picker (ring size, bangle size …). */
-const PRODUCTS = [
+   sizes: optional list shown as a picker (ring size, bangle size …).
+   With the backend switched on, the live list comes from the dashboards (Products tab) — this list is only the offline fallback. */
+let PRODUCTS = [
   { id: 'n1', cat: 'necklaces', img: 'images/n1.jpg', name: 'Gold Bead Chain Necklace', purity: '22K Hallmarked', weight: '14.2 g', price: 96500,  mrp: 101000, best: true,  rating: 4.8, desc: 'Fine link chain with hand-finished gold beads and a matching drop.' },
   { id: 'n2', cat: 'necklaces', img: 'images/n2.jpg', name: 'Diamond Drop Necklace',    purity: '18K · VS-GH',   weight: '11.8 g', price: 148000, mrp: 159000, best: true,  rating: 4.9, desc: 'Cascading diamond-set necklace with a matching pendant drop.' },
   { id: 'n3', cat: 'necklaces', img: 'images/n3.jpg', name: 'Bridal Rani Haar',         purity: '22K Hallmarked', weight: '64 g',   price: 438000, mrp: 455000, best: false, rating: 4.9, desc: 'Layered heavy haar with intricate gold work, made for the wedding day.' },
